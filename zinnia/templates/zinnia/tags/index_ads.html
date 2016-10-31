@@ -1,0 +1,23 @@
+{% load zinnia %}
+{% load ads_tags %}
+
+
+{% block publi_index %}
+<!--publi-->
+              <div class="col s12 m4 l4 hide-on-med-and-down">
+
+                <div class="card">
+                {% for ad in advs %}
+                    <div class="card-customimage">
+                    <a href="{{ ad.link }}">
+                    <img src="{{ ad.src.url }}">
+                    </a>
+                    <br>
+                     </div>
+                {% endfor %}
+                </div>
+              </div>
+        
+<!--end publi-->
+{% endblock publi_index %}
+

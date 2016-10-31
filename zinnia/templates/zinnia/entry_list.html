@@ -1,0 +1,133 @@
+{% extends "zinnia/base.html" %}
+{% load i18n %}
+{% load zinnia %}
+{% load staticfiles %}
+
+{% block meta-description %}{% spaceless %}
+{% if category %}
+{% if category.description %}
+{{ category.description|striptags|safe }}
+{% else %}
+{% blocktrans with object=category %}The last entries categorized under {{ object }}{% endblocktrans %}
+{% endif %}
+{% endif %}
+
+{% if tag %}
+{% blocktrans with object=tag %}Ultimos articulos tagged con {{ object }}{% endblocktrans %}
+{% endif %}
+
+{% if author %}
+{% blocktrans with object=author %}Ultimos articulos por {{ object }}{% endblocktrans %}
+{% endif %}
+
+{% endspaceless %}{% endblock meta-description %}
+
+{% block meta-description-page %}{% if page_obj %}{% ifnotequal page_obj.number 1 %} {% blocktrans with object=page_obj.number %}page {{ object }}{% endblocktrans %}{% endifnotequal %}{% endif %}{% endblock meta-description-page %}
+
+{% block title %}{% spaceless %}
+{% if category %}
+{% blocktrans with object=category %}Seccion {{ object }}{% endblocktrans %}
+{% endif %}
+
+{% if tag %}
+{% blocktrans with object=tag %}Tag {{ object }}{% endblocktrans %}
+{% endif %}
+
+{% if author %}
+{% blocktrans with object=author %}Autor {{ object }}{% endblocktrans %}
+{% endif %}
+
+{% endspaceless %}{% endblock title %}
+
+{% block title-page %}{% if page_obj %}{% ifnotequal page_obj.number 1 %} - {% blocktrans with object=page_obj.number %}Page {{ object }}{% endblocktrans %}{% endifnotequal %}{% endif %}{% endblock title-page %}
+
+{% block link %}
+  {{ block.super }}
+  {% if category %}
+    <link rel="alternate" type="application/rss+xml" title="{% blocktrans with object=category %}RSS feed de {{ object }}{% endblocktrans %}" href="{% url 'zinnia:category_feed' category.tree_path %}" />
+  {% endif %}
+  {% if tag %}
+    <link rel="alternate" type="application/rss+xml" title="{% blocktrans with object=tag %}RSS feed de {{ object }}{% endblocktrans %}" href="{% url 'zinnia:tag_feed' tag.name %}" />
+  {% endif %}
+  {% if author %}
+    <link rel="alternate" type="application/rss+xml" title="{% blocktrans with object=author %}RSS feed de {{ object }}{% endblocktrans %}" href="{% url 'zinnia:author_feed' author.get_username %}" />
+  {% endif %}
+{% endblock link %}
+
+{% block body-class %}entry-list{% if page_obj %} paginated page-{{ page_obj.number }}{% endif %}{% if category %} category category-{{ category.slug }}{% endif %}{% if tag %} tag tag-{{ tag|slugify }}{% endif %}{% if author %} author author-{{ author|slugify }}{% endif %}{% endblock body-class %}
+
+
+
+{% block content %}
+
+{% block content-title %}
+
+
+{% if category %}
+
+<h2 class="search-sections">{% blocktrans %}Sección: {{ category }}{% endblocktrans %}</h2>
+{% if category.description %}
+<p>{{ category.description|striptags|safe }}</p>
+{% endif %}
+
+<div class="col s12 m6 l12">
+  <a href="{% url 'zinnia:category_feed' category.tree_path %}" title="{% blocktrans with object=category %}RSS feed de {{ object }}{% endblocktrans %}">
+     <img class="right icons-share" src="{% static "zinnia/theme/icons/icon-rss.png" %}">
+  </a>
+</div>
+
+<div class="col s12 m6 l12">
+<hr class="search-sections">
+</div>
+
+{% endif %}
+
+{% if tag %}
+
+<h2 class="search-sections">{% blocktrans %}Tag en: {{ tag }}{% endblocktrans %}</h2>
+
+<div class="col s12 m6 l12">
+  <a href="{% url 'zinnia:tag_feed' tag.name %}" title="{% blocktrans with object=tag %}RSS feed of {{ object }}{% endblocktrans %}">
+    <img class="right icons-share" src="{% static "zinnia/theme/icons/icon-rss.png" %}">
+  </a>
+</div>
+
+<div class="col s12 m6 l12">
+<hr class="search-sections">
+</div>
+
+{% endif %}
+
+{% if author %}
+
+<h2 class="search-sections">{% blocktrans %}Articulos por: {{ author }}{% endblocktrans %}</h2>
+<div class="col s12 m6 l12">
+  <a href="{% url 'zinnia:author_feed' author.get_username %}" title="{% blocktrans with object=author %}RSS feed of {{ object }}{% endblocktrans %}"><img class="right icons-share" src="{% static "zinnia/theme/icons/icon-rss.png" %}">
+  </a>
+</div>
+
+<div class="col s12 m6 l12">
+<hr class="search-sections">
+</div>
+
+{% endif %}
+
+
+
+{% endblock content-title %}
+
+{% block content-loop %}
+{% for object in object_list %}
+  {% zinnia_loop_template object.content_template as template %}
+  {% include template with object_content=object.html_preview continue_reading=1 %}
+{% endfor %}
+{% endblock content-loop %}
+
+{% block content-pagination %}
+{% if is_paginated %}
+  {% zinnia_pagination page_obj %}
+{% endif %}
+{% endblock content-pagination %}
+
+{% endblock content %}
+

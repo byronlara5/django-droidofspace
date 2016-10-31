@@ -1,0 +1,21 @@
+{% load i18n %}
+{% load staticfiles %}
+
+  <div class="col s12 m8 l8 {% if not entries %}no-{% endif %}entries-popular">
+  <div class="card hoverable">
+  <div class="card-image">
+  {% for entry in entries %}
+    <a class="carousel-item" href="{{ entry.get_absolute_url }}" title="{{ entry.title }}" rel="bookmark">
+          <img class="responsive-img" src="{{ entry.image.url }}" itemprop="contentUrl" />
+          </a>
+          <span style="font-size: 20px" class="card-contents-caption"><strong>{{ entry.title }}</strong></span>
+                  </div>
+
+                  <div class="card-contents-dsection">
+                    <img class="icons-sharecal" src="{% static "zinnia/theme/icons/icon-calendar.png" %}">
+                      <a class="card-contents-section a">{{ entry.publication_date|date:"DATE_FORMAT" }}</a>
+                  </div>
+  {% endfor %}
+ </div>
+ </div>
+

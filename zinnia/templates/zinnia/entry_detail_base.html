@@ -1,0 +1,292 @@
+{% extends "zinnia/base.html" %}
+{% load i18n %}
+{% load zinnia %}
+{% load comments %}
+{% load photo_tags %}
+{% load ads_tags %}
+
+{% load staticfiles %}
+
+{% block title %}{{ object.title }}{% endblock title %}
+
+{% block meta-description %}{{ object.excerpt|safe }}{% endblock meta-description %}
+
+{% block meta-keywords %}{% if object.tags %}{{ object.tags }}{% else %}{{ block.super }}{% endif %}{% endblock meta-keywords %}
+
+{% block link %}
+  {{ block.super }}
+  {% with previous_entry=object.previous_entry %}{% if previous_entry %}
+  <link rel="prev" title="{{ previous_entry.title }}" href="{{ previous_entry.get_absolute_url }}" />
+  {% endif %}{% endwith %}
+  {% with next_entry=object.next_entry %}{% if next_entry %}
+  <link rel="next" title="{{ next_entry.title }}" href="{{ next_entry.get_absolute_url }}" />
+  {% endif %}{% endwith %}
+  <link rel="shortlink" href="{{ object.short_url }}" />
+  <link rel="canonical" href="{{ object.get_absolute_url }}" />
+  {% with year=object.publication_date|date:"Y" month=object.publication_date|date:"m" day=object.publication_date|date:"d" %}
+  <link rel="alternate" type="application/rss+xml" title="{% blocktrans with object=object.title %}RSS feed of discussions on {{ object }}{% endblocktrans %}"
+        href="{% url 'zinnia:entry_discussion_feed' year month day object.slug %}" />
+  <link rel="alternate" type="application/rss+xml" title="{% blocktrans with object=object.title %}RSS feed of comments on {{ object }}{% endblocktrans %}"
+        href="{% url 'zinnia:entry_comment_feed' year month day object.slug %}" />
+  <link rel="alternate" type="application/rss+xml" title="{% blocktrans with object=object.title %}RSS feed of pingbacks on {{ object }}{% endblocktrans %}"
+        href="{% url 'zinnia:entry_pingback_feed' year month day object.slug %}" />
+  <link rel="alternate" type="application/rss+xml" title="{% blocktrans with object=object.title %}RSS feed of trackbacks on {{ object }}{% endblocktrans %}"
+        href="{% url 'zinnia:entry_trackback_feed' year month day object.slug %}" />
+
+    <meta property="og:url"           content="{{ object.get_absolute_url }}" />
+    <meta property="og:type"          content="article" />
+    <meta property="og:title"         content="{% block title-fb %}{{ object.title }}{% endblock title-fb %}" />
+    <meta property="og:description"   content="{% block meta-description-fb %}{{ object.excerpt|safe }}{% endblock meta-description-fb %}" />
+    <meta property="og:image"         content="{{ object.image.url }}" />
+
+  {% endwith %}
+{% endblock link %}
+
+{% block body-class %}entry entry-{{ object.pk }}{% if object.featured %} featured{% endif %} year-{{ object.publication_date|date:"Y" }} month-{{ object.publication_date|date:"m" }} week-{{ object.publication_date|date:"W" }} day-{{ object.publication_date|date:"d" }}{% endblock body-class %}
+
+
+{% block content %}
+<!--slider-->
+  <div class="parallax-container">
+    <div class="parallax"><img src="{{ object.image.url }}" alt="{{ object.image_caption|default:object.title }}" itemprop="contentUrl" /></div>
+  </div>
+<!--end slider-->
+<br>
+
+<div class="row">
+
+  <!--bloque de titulo-->
+     <div class="col s12">
+     {% block entry-title %}
+    <h3 style="font-style: bold" class="center-align" itemprop="name">
+      
+        {{ object.title|widont }}
+    
+    </h3>
+    {% endblock entry-title %}
+    </div>
+    </div>
+    {% block entry-header %}
+    <header class="entry-header">
+  </header>
+  {% endblock entry-header %}
+<!--end bloque de titulo-->
+
+
+<div class="row">
+<!--bloque de info-articulo-->
+
+{% block entry-info %}
+    <p class="center-align">
+      {% block entry-authors %}
+      {% with authors=object.authors.all %}
+      {% if authors|length %}
+      {% trans "Escrito por:" %}
+      {% for author in authors %}
+      <span class="vcard author" itemprop="author" itemscope itemtype="http://schema.org/Person">
+        <a href="{{ author.get_absolute_url }}" class="fn url{% if not author.get_full_name %} nickname{% endif %}" rel="author"
+           title="{% blocktrans %}Show all {{ author }}'s entries{% endblocktrans %}" itemprop="url">{{ author }}</a></span>{% if not forloop.last %}, {% endif %}
+      {% endfor %}
+      {% trans "en" context "on date" %}
+      {% else %}
+      {% trans "Written on" %}
+      {% endif %}
+      {% endwith %}
+      {% endblock entry-authors %}
+      {% block entry-published %}
+      <time class="published" datetime="{{ object.publication_date|date:"c" }}" itemprop="datePublished">{{ object.publication_date|date:"DATE_FORMAT" }}</time>
+      {% endblock entry-published %}
+      {% block entry-categories %}
+      {% with categories=object.categories.all %}
+      {% if categories|length %}
+      {% trans "/ sección:" %}
+      {% for category in categories %}
+      <a href="{{ category.get_absolute_url }}"
+         title="{% blocktrans %}Show all entries in {{ category }}{% endblocktrans %}"
+         rel="tag category" itemprop="articleSection">{{ category }}</a>{% if not forloop.last %}, {% endif %}{% endfor %}{% endif %}.
+      {% endwith %}
+      {% endblock entry-categories %}
+    
+      {% block entry-last-update %}
+        {% trans "Actualizado:" %} <time class="updated" datetime="{{ object.last_update|date:"c" }}" itemprop="dateModified">{{ object.last_update|date:"DATE_FORMAT" }}</time>.
+      </p>
+    {% endblock entry-last-update %}
+    {% block entry-creation-date %}
+    <meta itemprop="dateCreated" content="{{ object.creation_date|date:"c" }}" />
+    {% endblock entry-creation-date %}
+    {% endblock entry-info %}
+
+<!--end bloque de info-articulo-->
+
+
+<!--bloque contenido-->
+{% block entry-contents %}
+    <div class="col s12 m9 l9">
+      <div class="card">
+        <div class="card-panel">
+{% block entry-body %}
+      <div class="">
+        {% block entry-word-count %}
+            <meta itemprop="wordCount" content="{{ object.word_count }}" />
+        {% endblock entry-word-count %}
+
+        {% block entry-lead %}
+          <div class="entry-summary" itemprop="headline">
+            {{ object.html_lead|safe }}
+          </div>
+        {% endblock entry-lead %}
+
+        {% block entry-content %}
+          <div class="entry-content" itemprop="articleBody">
+            <article style="font-size: 17px">
+              {{ object.content|safe }}
+              <h5>Galeria:</h5>
+              <hr>
+              {% for photo in entry.entryphoto_set.all %}
+              <img class="materialboxed" width="225" src="{{ photo.photo.src.url }}"/>
+              <br>
+              {% endfor %}
+            </article>
+          </div>
+      </div>
+        {% endblock entry-content %}
+    {% endblock entry-body %}
+
+
+
+
+ {% block entry-tags %}
+    
+      <div class="card">
+      <div class="card-title2">
+        <p class="entry-tags">
+        <i class="material-icons left-align">class</i>
+        <strong>{% trans "Tags" %}</strong> :
+         <meta itemprop="keywords" content="{{ object.tags }}" />
+        {% for tag in object.tags_list %}
+        <a class="chip" href="{% url 'zinnia:tag_detail' tag %}"
+         title="{% blocktrans %}Show all entries tagged by {{ tag }}{% endblocktrans %}"
+         rel="tag" itemprop="articleSection">{{ tag }}</a>
+        {% empty %}
+          <span>{% trans "No tags" %}</span>
+        {% endfor %}
+          </p>
+           </div>
+      </div>
+
+    {% endblock entry-tags %}
+<!--share-->
+
+<div class="card-action">
+
+          <div class="fb-share-button" data-href="{{ object.get_absolute_url }}" data-layout="button_count"></div>
+
+            <a href="https://twitter.com/share" class="twitter-share-button valign-wrapper" data-via="noticiasgrafica">Tweet</a>
+            <script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+'://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js,fjs);}}(document, 'script', 'twitter-wjs');</script>
+
+             </div>
+
+    <!--end share-->
+
+
+{% endblock entry-contents %}
+<!--end bloque contenido-->
+
+ </div>
+  </div>
+   </div>
+
+  <!--publics-->
+    {% get_ads_article template="zinnia/tags/article_ads.html" %}
+  <!--end publics-->
+
+
+</div>
+
+
+<div class="row">
+        <div class="col s12 m6 l2">
+         <h5><i class="material-icons">question_answer</i>  Comentar</h5>
+          </div>
+          <div class="col s12 m6 l7">
+         <hr>
+          </div>
+          </div>
+
+<div class="fb-comments" data-href="http://www.noticiasengrafica.com" data-width="900" data-numposts="10"></div>
+
+
+<!--bloque widgets-foot-->
+{% block entry-widgets %}
+<div class="col s12 m9 l9">
+    <div class="card">
+      
+<div class="row">
+<!--bloque de widget-next-entry-->
+  {% block entry-next-entry %}
+  {% with next_entry=object.next_entry %}
+  {% if next_entry %}
+  <div class="col s12 m6 l6 center-block">
+  <div class="card-image items-similar">
+   <span class="card-contents-next-previous"><strong>PROXIMO ARTICULO</strong></span> 
+      <a href="{{ next_entry.get_absolute_url }}" title="{{ next_entry.title }}" rel="bookmark">
+      <img class="responsive-img" src="{{ next_entry.image.url }}" alt="{{ next_entry.image_caption|default:next_entry.title }}" itemprop="contentUrl" />
+      </a>
+      <span class="card-contents-caption"><strong>{{ next_entry.title }}</strong></span>
+  </div>
+  </div>
+  {% endif %}
+  {% endwith %}
+  {% endblock entry-next-entry %}
+<!--end bloque widget-next-entry-->
+  
+
+<!--bloque de widgets-previous-entry-->
+  {% block entry-previous-entry %}
+  {% with previous_entry=object.previous_entry %}
+  {% if previous_entry %}
+  <div class="col s12 m6 l6 center-block">
+  <div class="card-image items-similar">
+      <span class="card-contents-next-previous"><strong>ARTICULO ANTERIOR</strong></span> 
+      <a href="{{ previous_entry.get_absolute_url }}" title="{{ next_entry.title }}" rel="bookmark">
+      <img class="responsive-img" src="{{ previous_entry.image.url }}" alt="{{ previous_entry.image_caption|default:previous_entry.title }}" itemprop="contentUrl" />
+      </a>
+      <span class="card-contents-caption"><strong>{{ previous_entry.title }}</strong></span>
+  </div>
+  </div>
+  {% endif %}
+  {% endwith %}
+  {% endblock entry-previous-entry %}
+<!--end bloque widgets-previous-entry-->
+  
+
+
+</div>
+
+</div>
+</div>   
+{% endblock entry-widgets %}
+<!--bloque widgets-foot-->
+
+
+
+
+<div class="col s12 m12 l12">
+    <div class="card">
+      <div class="singlecard-title">
+              <h5 style="font-style: bold">Te puede interesar:</h5>
+            </div>
+        <!--bloque de widgets-similar-entries-->
+        {% block entry-similar-entries %}
+            <div class="card-content">
+            <div class="row">
+                {% get_similar_entries %}
+            </div>
+        {% endblock entry-similar-entries %}
+        <!--end bloque widgets-similar-entries-->
+      </div>
+    </div>
+  </div>
+ 
+{% endblock content %}
+

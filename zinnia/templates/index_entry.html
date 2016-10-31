@@ -1,0 +1,55 @@
+{% load i18n %}
+{% load staticfiles %}
+
+{% load zinnia %}
+{% load ads_tags %}
+
+
+{% block index-entries %}
+
+
+
+<!--slider-->
+  {% get_featured_entries template="zinnia/tags/entries_featured.html" %}
+<!--end slider-->
+
+
+<!--section divider 1-->
+    {% block entries %}
+        <div class="row">
+        <div class="col s12 m6 l3">
+         <h5><i class="material-icons">stars</i>  Destacado</h5>
+          </div>
+          <div class="col s12 m6 l9">
+         <hr>
+          </div>
+          </div>
+          {% endblock entries %}
+        <!--end section divider 1-->
+
+
+       <!--featured-->
+          <div class="row">
+              {% get_popular_entries template="zinnia/tags/entries_popular.html" %}
+        <!--end featured-->
+
+          <!--publics-->
+              {% get_ads template="zinnia/tags/index_ads.html" %}
+          <!--end publics-->
+          </div>
+
+
+<!--section divider 1-->
+    {% block divider %}
+        <div class="row">
+        <div class="col s12 m6 l3">
+         <h5><i class="material-icons">whatshot</i>  Mas recientes</h5>
+          </div>
+          <div class="col s12 m6 l9">
+         <hr>
+          </div>
+          </div>
+          {% endblock divider %}
+        <!--end section divider 1-->
+  
+{% endblock index-entries %}
