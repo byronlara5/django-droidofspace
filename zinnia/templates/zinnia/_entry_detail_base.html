@@ -1,0 +1,49 @@
+{% load i18n %}
+{% load staticfiles %}
+
+
+{% load zinnia %}
+
+<div class="col s12 m10 l10">
+              <div class="card horizontal waves-effect waves-block waves-light">
+              <div class="card-image">
+                    <a href="{{ object.get_absolute_url }}" title="{{ object.title }}" rel="bookmark">
+                    <img class="responsive-img" src="{{ object.image.url }}" alt="{{ object.image_caption|default:object.title }}" itemprop="contentUrl" />
+                    </a>
+              </div>
+
+              <div class="card-stacked">
+                <div style="padding-right: 8px" class="block right-align">
+                  <i style="font-size: 15px" class="material-icons">schedule</i>
+                  <span style="font-size: 15px">{{ object.publication_date|date:"DATE_FORMAT" }}</span>
+                </div>
+
+                <div class="card-content">
+                  <span>
+                  <strong style="font-size: 20px">{{ object.title }}</strong></span>
+                      <p style="padding-top: 5px">{% block entry-word-count %}
+                      <meta itemprop="wordCount" content="{{ object.word_count }}" />
+                      {% endblock entry-word-count %}
+
+                      {% block entry-content %}
+                        {{ object_content|safe }}
+                      {% endblock entry-content %}
+
+
+                    {% block continue-reading %}
+                      {% if continue_reading and object_content.has_more %}
+                        <p>
+                          <p href="{{ object.get_absolute_url }}"
+                            title="{% blocktrans with object=object.title percent=object_content.remaining_percent|floatformat:0 %}{{ percent }}% of {{ object }} still remains to read.{% endblocktrans %}"
+                            rel="bookmark" itemprop="url">
+                      {% trans "Seguir leyendo.." %}
+                          </p>
+                        </p>
+                      {% endif %}
+                    {% endblock continue-reading %}</p>
+                  </div>
+            </div>
+
+            </div>
+
+  </div>

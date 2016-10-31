@@ -1,0 +1,19 @@
+{% load zinnia %}
+{% load invideos_tags %}
+
+
+{% block ivideos_index %}
+<!--ivideos-->
+{% for vid in ivideos %}
+    <div class="col s12 m4 l4">
+    <div class="card small">
+      <iframe width="316" height="240" src="https://www.youtube.com/embed/{{ vid.link }}" frameborder="0" allowfullscreen></iframe>
+        <div class="card-action">
+          <a href="{{ vid.link_descripcion }}">Ver mas</a>
+        </div>
+      </div>
+  </div>
+{% endfor %}                  
+<!--end ivideos-->
+{% endblock ivideos_index %}
+

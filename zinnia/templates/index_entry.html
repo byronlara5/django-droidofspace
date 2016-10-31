@@ -1,0 +1,17 @@
+{% load i18n %}
+{% load staticfiles %}
+
+{% load zinnia %}
+{% load ads_tags %}
+
+
+{% block index-entries %}
+
+
+
+<!--slider-->
+  {% get_featured_entries template="zinnia/tags/entries_featured.html" %}
+<!--end slider-->
+<div class="divider"></div>      
+  
+{% endblock index-entries %}

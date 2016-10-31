@@ -1,0 +1,33 @@
+{% load zinnia %}
+{% load ads_tags %}
+
+
+{% block publi_article %}
+<!--publi-->
+	<div class="col hide-on-small-only m3 l3">
+		<div class="card">
+			{% for publi in advs %}
+			<div class="card-image">
+					<img src="{{ publi.src.url }}">
+			</div>
+			<br>
+			{% endfor %}
+		</div>
+	</div>      
+<!--end publi-->
+{% endblock publi_article %}
+
+
+{% block publi_article_two %}
+{% for publi in advs %}
+<!--publi-->
+	<div class="col hide-on-small-only m3 l3">
+		<div class="card">
+			<div class="card-image">
+				<img src="{{ publi.src.url }}">
+			</div>
+		</div>
+	</div>
+{% endfor %}      
+<!--end publi-->
+{% endblock publi_article_two %}

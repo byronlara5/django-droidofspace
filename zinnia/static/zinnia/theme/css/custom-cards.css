@@ -1,0 +1,235 @@
+/* Custom Stylesheet */
+/**
+ * Use this file to override Materialize files so you can update
+ * the core Materialize files in the future
+ *
+ * Made By MaterializeCSS.com
+ */
+
+.card .card-customimage img {
+  display: block;
+  border-radius: 3px 2px 0 0;
+  position: relative;
+  left: 0;
+  right: 0;
+  top: 0;
+  bottom: 0;
+  width: 100%;
+}
+
+
+.card .singlecard-title {
+  border-bottom: 3px solid #938C8C;
+  padding: 5px;
+  font-style: bold;
+}
+
+.card .card-title2 {
+
+  font-weight: 500;
+  font-style: bold;
+  height: 50px;
+  margin-top: 25px;
+  background-color: #D1D1D1;
+}
+
+
+.card .card-action2 {
+  border-top: 3px solid rgba(160, 160, 160, 0.2);
+  padding: 20px;
+}
+
+
+
+/*******************
+  three new sections
+
+    font-size: 13px;
+  font-weight: 500;
+  font-style: bold;
+
+
+
+*******************/
+
+
+.icons-share {
+  padding-left: 5px;
+  padding-top: 6px;
+  padding-right: 4px;
+}
+
+.icons-sharecal {
+  padding-top: 6px;
+}
+
+
+.card .card-contents-section {
+  padding: 10px;
+  border-radius: 0 0 2px 2px;
+}
+
+
+.card .card-contents-dsection {
+  background-color: rgb(249, 249, 249);
+  border-top-color: rgba(160, 160, 160, 0.2);
+  border-top-style: solid;
+  border-top-width: 1px;
+  box-sizing: border-box;
+  clear: both;
+  color: rgba(0, 0, 0, 0.870588);
+  display: block;
+  font-size: 13px;
+  font-weight: normal;
+  font-style: bold;
+  height: 50px;
+}
+
+
+.card .card-contents-categories {
+  box-sizing: border-box;
+  color: rgba(0, 0, 0, 0.870588);
+  display: inline;
+  font-size: 15px;
+  font-weight: 500;
+  line-height: 33.6px;
+
+}
+
+
+.card .card-contents-caption {
+  background-color: rgba(0, 0, 0, 0.6);
+  bottom: 0px;
+  box-sizing: border-box;
+  color: #fff;
+  font-size: 17px;
+  font-weight: 500;
+  font-style: normal;
+  left: 0px;
+  line-height: 17px;
+  padding-bottom: 10px;
+  padding-left: 15px;
+  padding-right: 15px;
+  padding-top: 5px;
+  position: absolute;
+  width: auto;
+}
+
+
+.card .card-contents-next-previous {
+  background-color: #292727;
+  bottom: 12em;
+  box-sizing: border-box;
+  color: #fff;
+  font-size: 20px;
+  font-weight: 500;
+  font-style: normal;
+  left: 0px;
+  line-height: 17px;
+  padding-bottom: 7px;
+  padding-left: 15px;
+  padding-right: 15px;
+  padding-top: 3px;
+  position: static;
+  width: auto;
+  
+}
+
+   .card-content-readmore {
+  border-bottom-left-radius: 2px;
+  border-bottom-right-radius: 2px;
+  border-top-left-radius: 0px;
+  border-top-right-radius: 0px;
+  box-sizing: border-box;
+  color: #000000;
+  display: block;
+  font-size: 14px;
+  font-weight: normal;
+  padding-bottom: 20px;
+  padding-top: 20px;
+  padding-left: 20px;
+  padding-right: 20px;
+  text-align: justify;
+
+}
+
+
+
+
+.card .card-content-title {
+  font-size: 17px;
+  font-weight: 500;
+  font-style: bold;
+}
+
+.card .card-image .card-content-title {
+  color: #fff;
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  padding: 20px;
+}
+
+.card .card-content-title-recents {
+  font-size: 25px;
+  font-weight: 500;
+  font-style: bold;
+}
+
+.card .card-image .card-content-title-recents {
+  font-size: 15px;
+  background-color: white;
+  color: #716363;
+  position: absolute;
+  bottom: 0px;
+  left: 0px;
+  padding: 0px;
+}
+
+.card .card-contents-section .a {
+  padding-bottom: 10px;
+  font-size: 13px;
+  font-weight: 500;
+  font-style: bold;
+}
+
+.card .card-contents-section .share {
+  font-size: 13px;
+  font-weight: 500;
+  font-style: bold;
+}
+
+
+@media only screen and (min-width: 993px) and (max-width: 1119px) {
+  .card .card-contents-section .share {
+    visibility: hidden;
+  }
+}
+
+
+.entry-content  {
+  text-align: justify;
+}
+
+
+.card .card-title-share {
+
+  border-top-color: rgba(160, 160, 160, 0.2);
+  border-top-style: solid;
+  border-top-width: 1px;
+  font-weight: 500;
+  font-style: bold;
+  height: 50px;
+  margin-top: 25px;
+
+}
+
+.items-similar {
+
+  padding-top: 4px;
+  
+}
+
+
+
+

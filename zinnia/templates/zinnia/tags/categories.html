@@ -1,0 +1,15 @@
+{% load i18n %}
+
+<ul class="{% if not categories %}no-{% endif %}categories">
+<li><strong><a href="{% url 'zinnia:entry_archive_index' %}"><i class="material-icons left">view_module</i>Secciones:</a></strong></li>
+<li><div class="divider"></div></li>
+  {% for category in categories %}
+  <li class="left">
+      <a href="{{ category.get_absolute_url }}" title="{% blocktrans %}Show all entries in {{ category }}{% endblocktrans %}">{{ category }}<i class="material-icons">{{ category.icon }}</i></a> 
+  </li>
+  {% empty %}
+  <li>
+    {% trans "No categories yet." %}
+  </li>
+  {% endfor %}
+</ul>

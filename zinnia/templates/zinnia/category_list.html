@@ -1,0 +1,28 @@
+{% extends "zinnia/base.html" %}
+{% load i18n %}
+{% load mptt_tags %}
+
+{% block meta-description %}{% trans "Category list" %}{% endblock meta-description %}
+
+{% block title %}{% trans "Categories" %}{% endblock title %}
+
+{% block body-class %}category-list{% endblock body-class %}
+
+{% block content %}
+
+<h1>{% trans "Category list" %}</h1>
+
+<ul>
+  {% for object in object_list %}
+  <li>
+    <a href="{{ object.get_absolute_url }}"
+       title="{% blocktrans with category=object %}Show all entries in {{ category }}{% endblocktrans %}">{{ object }}</a>
+  </li>
+  {% empty %}
+  <li>
+    {% trans "No categories yet." %}
+  </li>
+  {% endfor %}
+</ul>
+
+{% endblock content %}
