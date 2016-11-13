@@ -60,7 +60,7 @@ MIDDLEWARE_CLASSES = [
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 ]
 
-ROOT_URLCONF = 'notigrafik.urls'
+ROOT_URLCONF = 'droidofspace.urls'
 
 TEMPLATES = [
     {
@@ -80,7 +80,7 @@ TEMPLATES = [
     },
 ]
 
-WSGI_APPLICATION = 'notigrafik.wsgi.application'
+WSGI_APPLICATION = 'droidofspace.wsgi.application'
 
 
 # Database
